@@ -1,0 +1,33 @@
+# Gradle
+.gradle/
+build/
+**/build/
+
+# Local configuration (contains SDK path, machine-specific)
+local.properties
+
+# Android Studio / IntelliJ
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Generated sources (protobuf)
+app/src/main/java/de/varakh/subsd/proto/
+
+# Keystore files (never commit signing keys)
+*.jks
+*.keystore
+
+# Gradle wrapper jar (binary — copy from another project or run `gradle wrapper`)
+gradle/wrapper/gradle-wrapper.jar
+
+# Fastlane — secrets and generated reports must never be committed
+fastlane/secrets/*
+!fastlane/secrets/.keep
+!fastlane/secrets/signing.env.example
+fastlane/report.*
+
+# AI
+.claude/
+CLAUDE.md

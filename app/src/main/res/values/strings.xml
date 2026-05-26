@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+    <string name="app_name">subsd</string>
+
+    <!-- Common actions (reused across screens) -->
+    <string name="action_refresh">Refresh</string>
+    <string name="action_back">Back</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_play_all">Play all</string>
+    <string name="action_play_now">Play now</string>
+    <string name="action_play_album">Play album</string>
+    <string name="action_play_playlist">Play</string>
+    <string name="action_add_to_queue">Add to queue</string>
+    <string name="action_options">Options</string>
+    <string name="action_show">Show</string>
+    <string name="action_hide">Hide</string>
+
+    <!-- Setup screen -->
+    <string name="setup_title">Connect to subsd</string>
+    <string
+        name="setup_description"
+    >Enter the address of your subsd daemon. The app works as a remote control — enable satellite mode if you also want to play audio locally on this device.</string>
+    <string name="setup_section_required">Connection</string>
+    <string name="setup_section_optional">Other options</string>
+    <string name="setup_url_label">subsd URL</string>
+    <string name="setup_url_placeholder">http://192.168.1.100:8080</string>
+    <string name="setup_device_name_label">Device name</string>
+    <string name="setup_device_name_placeholder">e.g. living-room (auto-detected)</string>
+    <string name="setup_device_name_hint">How this device appears in the daemon\'s satellite list</string>
+    <string name="setup_grpc_addr_label">gRPC address</string>
+    <string name="setup_grpc_addr_placeholder">auto (host:9090)</string>
+    <string name="setup_grpc_addr_hint">Leave blank unless the daemon uses a non-default gRPC port</string>
+    <string name="setup_grpc_token_label">gRPC token</string>
+    <string name="setup_grpc_token_placeholder">Shared secret (--grpc-token on daemon)</string>
+    <string name="setup_http_token_label">subsd token</string>
+    <string name="setup_http_token_placeholder">Leave blank if subsd has no token</string>
+    <string name="setup_http_token_hint">Used to log in to the daemon\'s HTTP API</string>
+    <string name="setup_satellite_label">Satellite mode</string>
+    <string name="setup_satellite_hint">Play audio locally on this device. Requires gRPC access to the daemon.</string>
+    <string name="setup_tls_label">Use TLS for gRPC</string>
+    <string name="setup_tls_hint">Enable if the daemon\'s gRPC port is TLS-protected</string>
+    <string name="setup_save">Save &amp; Connect</string>
+    <string name="setup_disconnect">Disconnect &amp; Reset</string>
+    <string name="setup_disconnect_confirm_title">Disconnect?</string>
+    <string
+        name="setup_disconnect_confirm_text"
+    >This will clear all connection settings and return to the setup screen.</string>
+    <string name="setup_disconnect_confirm_ok">Disconnect</string>
+
+    <!-- Navigation tabs -->
+    <string name="tab_library">Library</string>
+    <string name="tab_search">Search</string>
+    <string name="tab_queue">Queue</string>
+    <string name="tab_playlists">Playlists</string>
+    <string name="tab_satellites">Satellites</string>
+
+    <!-- Player -->
+    <string name="player_now_playing">Now Playing</string>
+    <string name="player_collapse">Collapse</string>
+    <string name="player_previous">Previous</string>
+    <string name="player_next">Next</string>
+    <string name="player_play">Play</string>
+    <string name="player_pause">Pause</string>
+    <string name="player_shuffle">Shuffle</string>
+    <string name="player_repeat">Repeat</string>
+    <string name="player_volume">Volume</string>
+
+    <!-- Queue screen -->
+    <string name="queue_title">Queue</string>
+    <string name="queue_clear">Clear queue</string>
+    <string name="queue_empty">Queue is empty</string>
+    <string name="queue_empty_desc">Empty queue</string>
+    <string name="queue_remove">Remove from queue</string>
+    <string name="queue_drag_handle">Drag to reorder</string>
+    <string name="queue_now_playing">Playing</string>
+
+    <!-- Library screen -->
+    <string name="library_artists_title">Artists</string>
+    <string name="library_no_artists">No artists</string>
+    <string name="library_albums_title">Albums</string>
+    <string name="library_tracks_title">Tracks</string>
+    <string name="library_add_album_to_queue">Add album to queue</string>
+
+    <!-- Search screen -->
+    <string name="search_hint">Search\u2026</string>
+    <string name="search_placeholder">Search artists, albums, tracks</string>
+    <string name="search_clear">Clear</string>
+    <string name="search_no_results">No results for \"%s\"</string>
+    <string name="search_section_artists">Artists (%d)</string>
+    <string name="search_section_albums">Albums (%d)</string>
+    <string name="search_section_songs">Songs (%d)</string>
+
+    <!-- Playlists screen -->
+    <string name="playlists_title">Playlists</string>
+    <string name="playlists_empty">No playlists</string>
+    <string name="playlist_play_desc">Play playlist</string>
+    <string name="playlist_queue_desc">Add playlist to queue</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+
+    <!-- Satellites screen -->
+    <string name="satellites_title">Satellites</string>
+    <string name="satellites_empty">No satellites registered</string>
+    <string name="satellites_empty_hint">Connect a subsd instance in satellite mode</string>
+    <string name="satellites_active">Active</string>
+    <string name="satellites_set_active">Set active</string>
+    <string name="satellites_expand">Expand</string>
+    <string name="satellites_collapse">Collapse</string>
+    <string name="satellites_audio_device">Audio device</string>
+    <string name="satellites_refresh_devices">Refresh devices</string>
+    <string name="satellites_no_devices">No devices available</string>
+    <string name="satellites_connected">Connected</string>
+    <string name="satellites_disconnected">Disconnected</string>
+    <string name="satellites_status_connected">Connected to daemon</string>
+    <string name="satellites_status_disconnected">Not connected</string>
+    <string name="toast_satellite_disconnected">Satellite \'%s\' disconnected</string>
+
+    <!-- Connection status -->
+    <string name="ws_reconnecting">Reconnecting…</string>
+
+    <!-- Notification (PlaybackService) -->
+    <string name="notification_channel_name">subsd</string>
+    <string name="notification_channel_desc">subsd satellite playback</string>
+    <string name="notification_title">subsd</string>
+    <string name="notification_text">Satellite connected</string>
+
+    <!-- Plurals -->
+    <plurals name="album_count">
+        <item quantity="one">%d album</item>
+        <item quantity="other">%d albums</item>
+    </plurals>
+    <plurals name="track_count">
+        <item quantity="one">%d track</item>
+        <item quantity="other">%d tracks</item>
+    </plurals>
+</resources>

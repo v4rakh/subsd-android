@@ -1,0 +1,38 @@
+opt_out_usage
+
+default_platform(:android)
+
+platform :android do
+    desc "Build debug APK"
+    lane :build_debug do
+        sh("#{ENV['PWD']}/fastlane/buildAndroidDebug.sh")
+    end
+
+    desc "Build release AAB (signed, for Play Store)"
+    lane :build do
+        sh("#{ENV['PWD']}/fastlane/buildAndroidRelease.sh")
+    end
+
+    desc "Build release APKs (signed, for sideloading)"
+    lane :build_apk do
+        sh("#{ENV['PWD']}/fastlane/buildAndroidReleaseApk.sh")
+    end
+
+    desc "Deploy a new version to the Google Play as Alpha"
+    lane :alpha do
+        build
+        upload_to_play_store(track: 'alpha', aab: 'app/build/outputs/bundle/release/app-release.aab')
+    end
+
+    desc "Deploy a new version to the Google Play as Beta"
+    lane :beta do
+        build
+        upload_to_play_store(track: 'beta', aab: 'app/build/outputs/bundle/release/app-release.aab')
+    end
+
+    desc "Deploy a new version to the Google Play"
+    lane :deploy do
+        build
+        upload_to_play_store(aab: 'app/build/outputs/bundle/release/app-release.aab')
+    end
+end

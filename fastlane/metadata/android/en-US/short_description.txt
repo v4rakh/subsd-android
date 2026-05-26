@@ -1,0 +1,1 @@
+subsd — satellite audio player for Subsonic-compatible servers
