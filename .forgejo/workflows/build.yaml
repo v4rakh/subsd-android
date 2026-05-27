@@ -1,0 +1,15 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+jobs:
+  build:
+    runs-on: native
+    steps:
+      - uses: actions/checkout@v6
+        name: Checkout
+      - name: Build
+        run: |
+          nix run .#ci-shell -- fastlane android build_debug

@@ -1,0 +1,68 @@
+{
+    $schema: "https://docs.renovatebot.com/renovate-schema.json",
+    prConcurrentLimit: 0,
+    osvVulnerabilityAlerts: true,
+    dependencyDashboardOSVVulnerabilitySummary: "all",
+    rangeStrategy: "pin",
+    automerge: false,
+    branchPrefix: "renovate/",
+    separateMajorMinor: true,
+    separateMultipleMajor: false,
+    separateMultipleMinor: false,
+    separateMinorPatch: true,
+    baseBranchPatterns: ["main"],
+    extends: [
+        ":ignoreUnstable",
+        ":rebaseStalePrs",
+        "config:recommended",
+        "group:monorepos",
+        "group:recommended",
+        "local>msm/renovate-presets//presets/github-actions-ignore.json",
+    ],
+    packageRules: [
+        {
+            matchUpdateTypes: ["patch"],
+            automerge: true,
+        },
+        {
+            matchPackageNames: ["org.jetbrains.kotlin.android", "org.jetbrains.kotlin.plugin.compose"],
+            groupName: "Kotlin",
+        },
+        {
+            matchPackageNames: [
+                "io.grpc:grpc-okhttp",
+                "io.grpc:grpc-protobuf-lite",
+                "io.grpc:protoc-gen-grpc-java",
+                "io.grpc:grpc-kotlin-stub",
+                "io.grpc:protoc-gen-grpc-kotlin",
+            ],
+            groupName: "gRPC",
+        },
+        {
+            matchPackageNames: ["com.google.protobuf:protoc", "com.google.protobuf:protobuf-kotlin-lite"],
+            groupName: "Protobuf",
+        },
+        {
+            matchPackageNames: ["androidx.media3:media3-exoplayer", "androidx.media3:media3-session"],
+            groupName: "Media3",
+        },
+        {
+            matchPackageNames: ["io.coil-kt.coil3:coil-compose", "io.coil-kt.coil3:coil-network-okhttp"],
+            groupName: "Coil",
+        },
+        {
+            matchPackageNames: [
+                "org.jetbrains.kotlinx:kotlinx-coroutines-android",
+                "org.jetbrains.kotlinx:kotlinx-coroutines-core",
+            ],
+            groupName: "Coroutines",
+        },
+        {
+            matchPackageNames: [
+                "androidx.lifecycle:lifecycle-viewmodel-compose",
+                "androidx.lifecycle:lifecycle-runtime-compose",
+            ],
+            groupName: "Lifecycle",
+        },
+    ],
+}

@@ -1,0 +1,47 @@
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "version to use"
+        required: true
+        type: string
+jobs:
+  release:
+    runs-on: native
+    steps:
+      - uses: actions/checkout@v6
+        name: Checkout
+
+      - name: Decode keystore
+        run: |
+          echo "${{ secrets.SUBSD_KEYSTORE_BASE64 }}" | base64 -d > fastlane/secrets/key.jks
+
+      - name: Build signed release APK
+        env:
+          SUBSD_KEYSTORE_FILE: fastlane/secrets/key.jks
+          SUBSD_KEYSTORE_PASSWORD: ${{ secrets.SUBSD_KEYSTORE_PASSWORD }}
+          SUBSD_KEY_ALIAS: ${{ secrets.SUBSD_KEY_ALIAS }}
+          SUBSD_KEY_PASSWORD: ${{ secrets.SUBSD_KEY_PASSWORD }}
+        run: |
+          nix run .#ci-shell -- fastlane android build_apk
+
+      - name: Remove keystore
+        if: always()
+        run: rm -f fastlane/secrets/key.jks
+
+      - name: Remove keystore
+        if: always()
+        run: |
+          mkdir -p dist
+          cp app/build/outputs/apk/release/app-release.apk dist/app-release.apk
+
+      - name: Upload artifacts
+        uses: ./.forgejo/actions/forgejo-release
+        with:
+          url: https://git.myservermanager.com
+          repo: varakh/subsd-android
+          token: ${{ secrets.FORGE_TOKEN }}
+          tag: ${{ inputs.version }}
+          direction: upload
+          release-dir: dist
+          release-notes: "Release of version '${{ inputs.version }}'."

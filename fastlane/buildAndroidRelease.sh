@@ -16,4 +16,4 @@ if [ -f "$SIGNING_ENV" ]; then
     . "$SIGNING_ENV"
 fi
 
-./gradlew bundleRelease
+./gradlew clean bundleRelease $AAPT2_OVERRIDE

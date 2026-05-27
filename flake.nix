@@ -22,22 +22,20 @@
         };
 
         androidComposition = pkgs.androidenv.composeAndroidPackages {
-          # compileSdk = 36, targetSdk = 35
-          platformVersions = [
-            "36"
-            "35"
-          ];
+          platformVersions = [ "36" ];
           buildToolsVersions = [ "37.0.0" ];
-          # ABIs to include in the SDK (for device deployment; not needed for compilation)
-          abiVersions = [
-            "arm64-v8a"
-            "x86_64"
-          ];
           includeNDK = false;
           includeSystemImages = false;
         };
 
         androidSdk = androidComposition.androidsdk;
+
+        androidEnvVars = ''
+          export ANDROID_SDK_ROOT="${androidSdk}/libexec/android-sdk"
+          export ANDROID_HOME="${androidSdk}/libexec/android-sdk"
+          export JAVA_HOME="${pkgs.jdk17}"
+          export GRADLE_OPTS="-Dorg.gradle.jvmargs=-Xmx2g"
+        '';
 
         # Android SDK tooling expects a standard FHS filesystem layout,
         # which NixOS does not provide by default.
@@ -52,16 +50,40 @@
             pkgs.fastlane
             pkgs.ruby
           ];
-          profile = ''
-            export ANDROID_SDK_ROOT="${androidSdk}/libexec/android-sdk"
-            export ANDROID_HOME="${androidSdk}/libexec/android-sdk"
-            export JAVA_HOME="${pkgs.jdk17}"
-            export GRADLE_OPTS="-Dorg.gradle.jvmargs=-Xmx4g"
+          profile = androidEnvVars;
+        };
+
+        # Stripped-down FHS environment without Android Studio, suitable for CI / fastlane builds.
+        # buildFHSEnv provides a proper dynamic linker path so downloaded protoc/grpc plugin
+        # binaries (generic Linux ELFs) work without requiring nix-ld on the host.
+        # Usage:
+        #   interactive : nix develop .#ci
+        #   non-interactive: nix run .#ci-shell -- fastlane build
+        ciFhs = pkgs.buildFHSEnv {
+          name = "android-ci-fhs";
+          targetPkgs = _: [
+            androidSdk
+            pkgs.git
+            pkgs.jdk17
+            pkgs.fastlane
+            pkgs.ruby
+          ];
+          profile = androidEnvVars;
+          # Pass-through args so non-interactive invocations work:
+          #   nix run .#ci-shell -- <cmd>  →  exec <cmd> inside FHS
+          runScript = pkgs.writeShellScript "ci-entrypoint" ''
+            if [ $# -gt 0 ]; then
+              exec "$@"
+            else
+              exec bash --login
+            fi
           '';
         };
       in
       {
         devShells.default = fhs.env;
+        devShells.ci = ciFhs.env; # interactive: nix develop .#ci
+        packages.ci-shell = ciFhs; # non-interactive: nix run .#ci-shell -- <cmd>
       }
     );
 }

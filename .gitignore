@@ -19,9 +19,6 @@ app/src/main/java/de/varakh/subsd/proto/
 *.jks
 *.keystore
 
-# Gradle wrapper jar (binary — copy from another project or run `gradle wrapper`)
-gradle/wrapper/gradle-wrapper.jar
-
 # Fastlane — secrets and generated reports must never be committed
 fastlane/secrets/*
 !fastlane/secrets/.keep

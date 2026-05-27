@@ -3,4 +3,4 @@ set -e
 
 cd "$(dirname "$0")/.."
 
-./gradlew assembleDebug
+./gradlew clean assembleDebug $AAPT2_OVERRIDE

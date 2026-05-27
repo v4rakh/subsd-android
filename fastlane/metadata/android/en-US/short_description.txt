@@ -1,1 +1,1 @@
-subsd — satellite audio player for Subsonic-compatible servers
+subsd — remote control and satellite audio player for subsd

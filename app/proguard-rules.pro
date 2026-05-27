@@ -17,3 +17,14 @@
 -keepnames class kotlinx.coroutines.CoroutineExceptionHandler {}
 
 -keep class kotlin.coroutines.Continuation
+
+# Suppress warnings for optional dependencies not present on Android
+-dontwarn com.squareup.okhttp.CipherSuite
+-dontwarn com.squareup.okhttp.ConnectionSpec
+-dontwarn com.squareup.okhttp.TlsVersion
+-dontwarn javax.naming.NamingEnumeration
+-dontwarn javax.naming.NamingException
+-dontwarn javax.naming.directory.Attribute
+-dontwarn javax.naming.directory.Attributes
+-dontwarn javax.naming.directory.DirContext
+-dontwarn javax.naming.directory.InitialDirContext

@@ -1,9 +1,9 @@
 subsd is a music player daemon for Subsonic-compatible servers such as Navidrome.
 
-This Android app acts as a satellite: it connects to a running subsd daemon via gRPC and plays audio locally on the device. The subsd web UI or remote CLI acts as the remote control.
+This Android app is a companion, it can act as remote or as standalone satellite (playing music on your device).
 
 Features:
-- Browse artists, albums, and tracks from your Subsonic library
+- Browse artists, albums, and tracks from your subsd library
 - Search your entire music collection
 - Full queue management
 - Playlist support

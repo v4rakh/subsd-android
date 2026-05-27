@@ -3,7 +3,7 @@
 An Android client for [subsd](https://git.myservermanager.com/varakh/subsd), a self-hosted music
 server daemon from Subsonic-compatible libraries and a satellite playback system.
 
-See [screenshots](./_doc/).
+See [screenshots](./fastlane/metadata/android/en-US/images/phoneScreenshots/).
 
 ## Features
 
@@ -26,7 +26,7 @@ See [screenshots](./_doc/).
 On first launch you will be taken to the setup screen. Fill in:
 
 | Field          | Required       | Description                                                                   |
-|----------------|----------------|-------------------------------------------------------------------------------|
+| -------------- | -------------- | ----------------------------------------------------------------------------- |
 | Server URL     | Yes            | Base HTTP URL of the subsd daemon, e.g. `http://192.168.1.100:8080`           |
 | HTTP token     | No             | API token if authentication is enabled on the server                          |
 | Satellite mode | No             | Enable to act as a local audio output device                                  |
@@ -40,19 +40,35 @@ certificate.
 
 ## Building
 
-```bash
+> Prefer `fastlane` for related tasks, but you can also invoke `gradle` manually.
+
+```shell
+# gradle
 ./gradlew assembleDebug
+
+# fastlane
+fastlane android build_debug
 ```
 
-A release build requires signing credentials provided via environment variables:
+1. A **release** build requires signing credentials provided via environment variables.
+2. Make sure version is properly set in `app/build.gradle.kts`
 
-```bash
+```shell
 export SUBSD_KEYSTORE_FILE=/path/to/keystore.jks
 export SUBSD_KEYSTORE_PASSWORD=...
 export SUBSD_KEY_ALIAS=...
 export SUBSD_KEY_PASSWORD=...
+
+# gradle
 ./gradlew assembleRelease
+
+# fastlane
+fastlane android build_apk
 ```
+
+There are other `fastlane` tasks which could be used for Play Store publication.
+
+When release is done, bump version properly in `app/build.gradle.kts` for the next version.
 
 ## Architecture
 
