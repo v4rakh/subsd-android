@@ -56,7 +56,7 @@ class SubsdWebSocket(private val api: SubsdApi) {
         ws?.close(1000, "reconnecting")
         val wsUrl = httpUrl.trimEnd('/')
             .replace("https://", "wss://")
-            .replace("http://", "ws://") + "/ws"
+            .replace("http://", "ws://") + "/api/v1/ws"
         Log.i(TAG, "Connecting to $wsUrl")
         val request = Request.Builder().url(wsUrl).build()
         ws = api.client.newWebSocket(request, Listener())
@@ -94,15 +94,13 @@ class SubsdWebSocket(private val api: SubsdApi) {
                         Log.i(TAG, "Satellite disconnected: $name")
                         if (name.isNotBlank()) events.trySend(WsEvent.SatelliteDisconnected(name))
                     }
+                    "state" -> {
+                        val state = obj.toPlayerState()
+                        Log.d(TAG, "Player state: playing=${state.playing} idx=${state.currentIdx} queue=${state.queue.size} shuffle=${state.shuffle} repeat=${state.repeat}")
+                        _playerState.value = state
+                    }
                     else -> {
-                        // Player state broadcast — the primary message type
-                        if (obj.has("playing") || obj.has("queue")) {
-                            val state = obj.toPlayerState()
-                            Log.d(TAG, "Player state: playing=${state.playing} idx=${state.currentIdx} queue=${state.queue.size} shuffle=${state.shuffle} repeat=${state.repeat}")
-                            _playerState.value = state
-                        } else {
-                            Log.d(TAG, "Unknown WS message: ${text.take(120)}")
-                        }
+                        Log.d(TAG, "Unknown WS message: ${text.take(120)}")
                     }
                 }
             } catch (e: Exception) {
