@@ -218,6 +218,37 @@ private fun ExpandedPlayer(vm: MainViewModel, state: PlayerState, onCollapse: ()
                     tint = MaterialTheme.colorScheme.onSurfaceVariant)
             }
 
+            Spacer(Modifier.height(8.dp))
+
+            // ReplayGain selector
+            val replayGainOptions = listOf("no", "track", "album")
+            val replayGainLabels = mapOf(
+                "no" to stringResource(R.string.player_replaygain_off),
+                "track" to stringResource(R.string.player_replaygain_track),
+                "album" to stringResource(R.string.player_replaygain_album)
+            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(
+                    stringResource(R.string.player_replaygain),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.width(80.dp)
+                )
+                Row(horizontalArrangement = Arrangement.spacedBy(4.dp)) {
+                    replayGainOptions.forEach { mode ->
+                        val selected = state.replayGain == mode
+                        FilterChip(
+                            selected = selected,
+                            onClick = { vm.setReplayGain(mode) },
+                            label = { Text(replayGainLabels[mode] ?: mode, style = MaterialTheme.typography.bodySmall) }
+                        )
+                    }
+                }
+            }
+
             // Codec info
             val codecInfo = track.suffix.ifBlank { "" }.let { s ->
                 buildString {

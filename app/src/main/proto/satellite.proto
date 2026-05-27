@@ -68,15 +68,16 @@ message ServerMessage {
 }
 
 message Command {
-  CommandType type     = 1;
-  string      url      = 2;
-  double      position = 3;
-  int32       volume   = 4;
-  string      device   = 5;
-  string      id       = 6;
-  string      title    = 7;
-  string      artist   = 8;
-  string      album    = 9;
+  CommandType type        = 1;
+  string      url         = 2;
+  double      position    = 3;
+  int32       volume      = 4;
+  string      device      = 5;
+  string      id          = 6;
+  string      title       = 7;
+  string      artist      = 8;
+  string      album       = 9;
+  string      replay_gain = 10;
 }
 
 enum CommandType {
@@ -87,6 +88,7 @@ enum CommandType {
   SET_VOLUME       = 4;
   SET_AUDIO_DEVICE = 5;
   RESUME           = 6;
+  SET_REPLAY_GAIN  = 7;
 }
 
 message RequestDevices {}

@@ -163,6 +163,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun toggleRepeat() = cmd("toggleRepeat") { app.api.repeat() }
     fun seek(pos: Double) = cmd("seek") { app.api.seek(pos) }
     fun setVolume(vol: Int) = cmd("setVolume") { app.api.volume(vol) }
+    fun setReplayGain(mode: String) = cmd("setReplayGain") { app.api.setReplayGain(mode) }
 
     // ── Queue ─────────────────────────────────────────────────────────────
 

@@ -75,7 +75,8 @@ data class PlayerState(
     val volume: Int = 100,
     val shuffle: Boolean = false,
     val repeat: Boolean = false,
-    val lastScrobble: String = ""
+    val lastScrobble: String = "",
+    val replayGain: String = "no"
 ) {
     val currentTrack: Track? get() = queue.getOrNull(currentIdx)
 }
@@ -186,7 +187,8 @@ fun JSONObject.toPlayerState(): PlayerState = PlayerState(
     volume = optInt("volume", 100),
     shuffle = optBoolean("shuffle", false),
     repeat = optBoolean("repeat", false),
-    lastScrobble = str("lastScrobble")
+    lastScrobble = str("lastScrobble"),
+    replayGain = str("replayGain").ifBlank { "no" }
 )
 
 fun JSONObject.toSatelliteInfo(): SatelliteInfo = SatelliteInfo(

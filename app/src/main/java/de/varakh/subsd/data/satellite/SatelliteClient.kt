@@ -33,6 +33,7 @@ interface SatelliteCommandHandler {
     fun onSeek(position: Double)
     fun onSetVolume(volume: Int)
     fun onSetAudioDevice(device: String)
+    fun onSetReplayGain(mode: String)
     fun getState(): SatelliteState
 }
 
@@ -188,6 +189,7 @@ class SatelliteClient(private val handler: SatelliteCommandHandler) {
             CommandType.SEEK -> handler.onSeek(cmd.position)
             CommandType.SET_VOLUME -> handler.onSetVolume(cmd.volume)
             CommandType.SET_AUDIO_DEVICE -> handler.onSetAudioDevice(cmd.device)
+            CommandType.SET_REPLAY_GAIN -> handler.onSetReplayGain(cmd.replayGain)
             else -> Log.w(TAG, "Unknown command type: ${cmd.type}")
         }
     }

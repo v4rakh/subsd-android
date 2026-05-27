@@ -61,6 +61,9 @@ class SubsdApi(baseUrl: String) {
     suspend fun volume(vol: Int) =
         postJson("/api/v1/volume", JSONObject().put("volume", vol).toString())
 
+    suspend fun setReplayGain(mode: String) =
+        postJson("/api/v1/replaygain", JSONObject().put("mode", mode).toString())
+
     // ── Queue ─────────────────────────────────────────────────────────────
 
     suspend fun enqueueSong(id: String) = post("/api/v1/queue/song/$id")

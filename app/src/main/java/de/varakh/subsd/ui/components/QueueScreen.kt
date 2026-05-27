@@ -31,11 +31,14 @@ fun QueueScreen(vm: MainViewModel) {
     val queue = state.queue
     val lazyListState = rememberLazyListState()
 
-    // Local copy for optimistic drag-and-drop reordering
-    val localQueue = remember { mutableStateListOf<Track>() }
+    // Local copy for optimistic drag-and-drop reordering.
+    // Each entry carries a slot key (Long) that is unique and stable for the item's lifetime,
+    // which allows the same track to appear twice without key collisions.
+    var nextKey by remember { mutableLongStateOf(0L) }
+    val localQueue = remember { mutableStateListOf<Pair<Long, Track>>() }
     LaunchedEffect(queue) {
         localQueue.clear()
-        localQueue.addAll(queue)
+        queue.forEach { track -> localQueue.add(nextKey++ to track) }
     }
 
     // Track drag start/end so we send a single API call per drag gesture
@@ -112,8 +115,8 @@ fun QueueScreen(vm: MainViewModel) {
             }
         } else {
             LazyColumn(state = lazyListState, modifier = Modifier.fillMaxSize()) {
-                itemsIndexed(localQueue, key = { idx, _ -> idx }) { idx, track ->
-                    ReorderableItem(reorderState, key = idx) {
+                itemsIndexed(localQueue, key = { _, entry -> entry.first }) { idx, (key, track) ->
+                    ReorderableItem(reorderState, key = key) {
                         QueueTrackItem(
                             track = track,
                             isCurrent = idx == state.currentIdx,

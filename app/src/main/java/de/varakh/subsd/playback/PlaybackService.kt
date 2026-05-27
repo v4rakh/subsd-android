@@ -154,6 +154,13 @@ class PlaybackService : Service(), SatelliteCommandHandler {
         Log.d(TAG, "onSetAudioDevice: $device (ExoPlayer uses system audio routing)")
     }
 
+    @Volatile private var replayGainMode: String = "no"
+
+    override fun onSetReplayGain(mode: String) {
+        Log.i(TAG, "onSetReplayGain: $mode (stored; audio processing not yet implemented)")
+        replayGainMode = mode
+    }
+
     override fun getState(): SatelliteState {
         val p = player
         val status = when {
