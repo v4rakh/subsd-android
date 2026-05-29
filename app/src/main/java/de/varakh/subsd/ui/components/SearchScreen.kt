@@ -176,6 +176,9 @@ private fun SearchAlbumItem(album: Album, vm: MainViewModel) {
                     DropdownMenuItem(text = { Text(stringResource(R.string.action_add_to_queue)) },
                         leadingIcon = { Icon(Icons.Default.AddToQueue, null) },
                         onClick = { vm.enqueueAlbum(album.id); showMenu = false })
+                    DropdownMenuItem(text = { Text(stringResource(R.string.action_go_to_artist)) },
+                        leadingIcon = { Icon(Icons.Default.Person, null) },
+                        onClick = { vm.goToArtist(album.artistId, album.artist); showMenu = false })
                 }
             }
         },
@@ -205,6 +208,12 @@ private fun SearchSongItem(song: Song, vm: MainViewModel) {
                     DropdownMenuItem(text = { Text(stringResource(R.string.action_add_to_queue)) },
                         leadingIcon = { Icon(Icons.Default.AddToQueue, null) },
                         onClick = { vm.enqueueSong(song.id); showMenu = false })
+                    DropdownMenuItem(text = { Text(stringResource(R.string.action_go_to_album)) },
+                        leadingIcon = { Icon(Icons.Default.Album, null) },
+                        onClick = { vm.goToAlbum(song.albumId, song.album, song.artistId); showMenu = false })
+                    DropdownMenuItem(text = { Text(stringResource(R.string.action_go_to_artist)) },
+                        leadingIcon = { Icon(Icons.Default.Person, null) },
+                        onClick = { vm.goToArtist(song.artistId, song.artist); showMenu = false })
                 }
             }
         },

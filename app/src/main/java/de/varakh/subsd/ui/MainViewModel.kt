@@ -4,11 +4,18 @@ import android.app.Application
 import android.content.Intent
 import android.os.Build
 import android.util.Log
+import androidx.annotation.StringRes
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.PlaylistPlay
+import androidx.compose.material.icons.automirrored.filled.QueueMusic
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
+import de.varakh.subsd.R
 import de.varakh.subsd.SubsdApp
 import de.varakh.subsd.data.api.ApiException
 import de.varakh.subsd.data.api.WsEvent
@@ -22,6 +29,14 @@ import kotlinx.coroutines.launch
 private const val TAG = "MainViewModel"
 
 enum class LibraryView { Artists, Albums, Tracks }
+
+enum class Tab(@StringRes val labelRes: Int, val icon: ImageVector) {
+    Library(R.string.tab_library, Icons.Default.LibraryMusic),
+    Search(R.string.tab_search, Icons.Default.Search),
+    Queue(R.string.tab_queue, Icons.AutoMirrored.Filled.QueueMusic),
+    Playlists(R.string.tab_playlists, Icons.AutoMirrored.Filled.PlaylistPlay),
+    Satellites(R.string.tab_satellites, Icons.Default.Devices),
+}
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
     private val app get() = SubsdApp.instance
@@ -37,6 +52,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun openSettings() { showSettings = true }
     fun closeSettings() { showSettings = false }
+
+    // ── Navigation ────────────────────────────────────────────────────────
+
+    var selectedTab by mutableStateOf(Tab.Library); private set
+
+    fun selectTab(tab: Tab) { selectedTab = tab }
 
     // ── Player state (driven by WebSocket) ────────────────────────────────
 
@@ -206,6 +227,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
             libraryLoading = false
             libraryView = LibraryView.Albums
+            selectedTab = Tab.Library
         }
     }
 
@@ -215,6 +237,14 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             libraryLoading = true
             currentAlbum = album
             try {
+                // If we're jumping here from Search (albums list is empty or belongs to a
+                // different artist), prefetch the parent artist so back-navigation shows albums.
+                if (albums.isEmpty() || currentArtist?.id != album.artistId) {
+                    val artist = app.api.getArtist(album.artistId)
+                    currentArtist = artist
+                    albums = artist.albums
+                    Log.i(TAG, "Prefetched ${albums.size} albums for artist ${artist.name}")
+                }
                 songs = app.api.getAlbum(album.id).songs
                 Log.i(TAG, "Loaded ${songs.size} songs")
             } catch (e: Exception) {
@@ -223,6 +253,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             }
             libraryLoading = false
             libraryView = LibraryView.Tracks
+            selectedTab = Tab.Library
         }
     }
 
@@ -241,6 +272,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
             LibraryView.Artists -> {}
         }
     }
+
+    fun goToArtist(artistId: String, artistName: String) =
+        loadAlbums(Artist(id = artistId, name = artistName, albumCount = 0, coverArt = ""))
+
+    fun goToAlbum(albumId: String, albumName: String, artistId: String) =
+        loadSongs(Album(id = albumId, name = albumName, artistId = artistId, artist = "", coverArt = "", year = 0, songCount = 0))
 
     fun playSong(id: String) = cmd("playSong") { app.api.playSong(id) }
     fun enqueueSong(id: String) = cmd("enqueueSong") { app.api.enqueueSong(id) }

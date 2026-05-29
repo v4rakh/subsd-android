@@ -12,6 +12,8 @@
     <string name="action_play_playlist">Play</string>
     <string name="action_add_to_queue">Add to queue</string>
     <string name="action_options">Options</string>
+    <string name="action_go_to_artist">Go to artist</string>
+    <string name="action_go_to_album">Go to album</string>
     <string name="action_show">Show</string>
     <string name="action_hide">Hide</string>
 
