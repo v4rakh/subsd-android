@@ -172,8 +172,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 when (event) {
                     is WsEvent.SatelliteDisconnected -> {
                         Log.i(TAG, "Satellite disconnected: ${event.name}")
-                        toastMessage = getApplication<Application>()
-                            .getString(de.varakh.subsd.R.string.toast_satellite_disconnected, event.name)
+                        toastMessage = getString(R.string.toast_satellite_disconnected, event.name)
                     }
                 }
             }
@@ -182,23 +181,23 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     // ── Playback controls ─────────────────────────────────────────────────
 
-    fun play() = cmd("play") { app.api.play() }
-    fun pause() = cmd("pause") { app.api.pause() }
-    fun playPause() = cmd("playPause") { app.api.playPause() }
-    fun next() = cmd("next") { app.api.next() }
-    fun prev() = cmd("prev") { app.api.prev() }
-    fun toggleShuffle() = cmd("toggleShuffle") { app.api.shuffle() }
-    fun toggleRepeat() = cmd("toggleRepeat") { app.api.repeat() }
-    fun seek(pos: Double) = cmd("seek") { app.api.seek(pos) }
-    fun setVolume(vol: Int) = cmd("setVolume") { app.api.volume(vol) }
-    fun setReplayGain(mode: String) = cmd("setReplayGain") { app.api.setReplayGain(mode) }
+    fun play() = cmd("play", R.string.error_play) { app.api.play() }
+    fun pause() = cmd("pause", R.string.error_pause) { app.api.pause() }
+    fun playPause() = cmd("playPause", R.string.error_play_pause) { app.api.playPause() }
+    fun next() = cmd("next", R.string.error_next) { app.api.next() }
+    fun prev() = cmd("prev", R.string.error_prev) { app.api.prev() }
+    fun toggleShuffle() = cmd("toggleShuffle", R.string.error_toggle_shuffle) { app.api.shuffle() }
+    fun toggleRepeat() = cmd("toggleRepeat", R.string.error_toggle_repeat) { app.api.repeat() }
+    fun seek(pos: Double) = cmd("seek", R.string.error_seek) { app.api.seek(pos) }
+    fun setVolume(vol: Int) = cmd("setVolume", R.string.error_set_volume) { app.api.volume(vol) }
+    fun setReplayGain(mode: String) = cmd("setReplayGain", R.string.error_set_replay_gain) { app.api.setReplayGain(mode) }
 
     // ── Queue ─────────────────────────────────────────────────────────────
 
-    fun jump(idx: Int) = cmd("jump($idx)") { app.api.jump(idx) }
-    fun dequeue(idx: Int) = cmd("dequeue($idx)") { app.api.dequeue(idx) }
-    fun clearQueue() = cmd("clearQueue") { app.api.clearQueue() }
-    fun moveInQueue(from: Int, to: Int) = cmd("moveInQueue") { app.api.moveInQueue(from, to) }
+    fun jump(idx: Int) = cmd("jump($idx)", R.string.error_jump) { app.api.jump(idx) }
+    fun dequeue(idx: Int) = cmd("dequeue($idx)", R.string.error_dequeue) { app.api.dequeue(idx) }
+    fun clearQueue() = cmd("clearQueue", R.string.error_clear_queue) { app.api.clearQueue() }
+    fun moveInQueue(from: Int, to: Int) = cmd("moveInQueue", R.string.error_move_in_queue) { app.api.moveInQueue(from, to) }
 
     // ── Library ───────────────────────────────────────────────────────────
 
@@ -212,8 +211,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 Log.i(TAG, "Loaded ${artists.size} artists")
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to load artists: ${e.message}")
-                libraryError = e.message
-                showError("Failed to load artists", e)
+                libraryError = getString(R.string.error_load_artists)
+                showError(R.string.error_load_artists)
             }
             libraryLoading = false
             libraryView = LibraryView.Artists
@@ -230,7 +229,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 Log.i(TAG, "Loaded ${albums.size} albums")
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to load albums: ${e.message}")
-                showError("Failed to load albums", e)
+                showError(R.string.error_load_albums)
             }
             libraryLoading = false
             libraryView = LibraryView.Albums
@@ -256,7 +255,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 Log.i(TAG, "Loaded ${songs.size} songs")
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to load songs: ${e.message}")
-                showError("Failed to load songs", e)
+                showError(R.string.error_load_songs)
             }
             libraryLoading = false
             libraryView = LibraryView.Tracks
@@ -286,12 +285,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun goToAlbum(albumId: String, albumName: String, artistId: String) =
         loadSongs(Album(id = albumId, name = albumName, artistId = artistId, artist = "", coverArt = "", year = 0, songCount = 0))
 
-    fun playSong(id: String) = cmd("playSong") { app.api.playSong(id) }
-    fun enqueueSong(id: String) = cmd("enqueueSong") { app.api.enqueueSong(id) }
-    fun playAlbum(id: String) = cmd("playAlbum") { app.api.playAlbum(id) }
-    fun enqueueAlbum(id: String) = cmd("enqueueAlbum") { app.api.enqueueAlbum(id) }
-    fun playArtist(id: String) = cmd("playArtist") { app.api.playArtist(id) }
-    fun enqueueArtist(id: String) = cmd("enqueueArtist") { app.api.enqueueArtist(id) }
+    fun playSong(id: String) = cmd("playSong", R.string.error_play_song) { app.api.playSong(id) }
+    fun enqueueSong(id: String) = cmd("enqueueSong", R.string.error_enqueue_song) { app.api.enqueueSong(id) }
+    fun playAlbum(id: String) = cmd("playAlbum", R.string.error_play_album) { app.api.playAlbum(id) }
+    fun enqueueAlbum(id: String) = cmd("enqueueAlbum", R.string.error_enqueue_album) { app.api.enqueueAlbum(id) }
+    fun playArtist(id: String) = cmd("playArtist", R.string.error_play_artist) { app.api.playArtist(id) }
+    fun enqueueArtist(id: String) = cmd("enqueueArtist", R.string.error_enqueue_artist) { app.api.enqueueArtist(id) }
 
     // ── Search ────────────────────────────────────────────────────────────
 
@@ -338,22 +337,52 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 playlistView = true
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to open playlist: ${e.message}")
-                showError("Failed to load playlist", e)
+                showError(R.string.error_load_playlist)
             }
         }
     }
 
     fun playlistBack() { playlistView = false; currentPlaylist = null }
 
-    fun playPlaylist(id: String) = cmd("playPlaylist") { app.api.playPlaylist(id) }
-    fun enqueuePlaylist(id: String) = cmd("enqueuePlaylist") { app.api.enqueuePlaylist(id) }
+    fun playPlaylist(id: String) = cmd("playPlaylist", R.string.error_play_playlist) { app.api.playPlaylist(id) }
+    fun enqueuePlaylist(id: String) = cmd("enqueuePlaylist", R.string.error_enqueue_playlist) { app.api.enqueuePlaylist(id) }
 
     // ── Satellites ────────────────────────────────────────────────────────
 
-    fun setActiveSatellite(name: String) = cmd("setActiveSatellite") { app.api.setActiveSatellite(name) }
+    fun setActiveSatellite(name: String) {
+        satellites = satellites.map { it.copy(active = it.name == name) }
+        viewModelScope.launch {
+            Log.d(TAG, "cmd: setActiveSatellite")
+            try {
+                app.api.setActiveSatellite(name)
+            } catch (e: ApiException) {
+                Log.e(TAG, "API error in setActiveSatellite: ${e.code} ${e.message}")
+                showError(R.string.error_set_active_satellite)
+            } catch (e: Exception) {
+                Log.e(TAG, "Error in setActiveSatellite: ${e.message}")
+                showError(R.string.error_set_active_satellite)
+            }
+        }
+    }
 
-    fun setSatelliteDevice(satellite: String, device: String) =
-        cmd("setSatelliteDevice") { app.api.setSatelliteDevice(satellite, device) }
+    fun setSatelliteDevice(satellite: String, device: String) {
+        satellites = satellites.map { if (it.name == satellite) it.copy(activeDevice = device) else it }
+        viewModelScope.launch {
+            Log.d(TAG, "cmd: setSatelliteDevice")
+            try {
+                app.api.setSatelliteDevice(satellite, device)
+                satellites = app.api.refreshSatelliteDevices(satellite)
+            } catch (e: ApiException) {
+                Log.e(TAG, "API error in setSatelliteDevice: ${e.code} ${e.message}")
+                showError(R.string.error_set_satellite_device)
+                try { satellites = app.api.refreshSatelliteDevices(satellite) } catch (_: Exception) {}
+            } catch (e: Exception) {
+                Log.e(TAG, "Error in setSatelliteDevice: ${e.message}")
+                showError(R.string.error_set_satellite_device)
+                try { satellites = app.api.refreshSatelliteDevices(satellite) } catch (_: Exception) {}
+            }
+        }
+    }
 
     fun refreshSatelliteDevices(name: String) {
         viewModelScope.launch {
@@ -362,7 +391,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 satellites = app.api.refreshSatelliteDevices(name)
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to refresh satellite devices: ${e.message}")
-                showError("Failed to refresh devices", e)
+                showError(R.string.error_refresh_satellite_devices)
             }
         }
     }
@@ -381,7 +410,7 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch {
             try { app.api.setDevice(name); loadDevices() } catch (e: Exception) {
                 Log.e(TAG, "Failed to set device: ${e.message}")
-                showError("Failed to set device", e)
+                showError(R.string.error_set_device)
             }
         }
     }
@@ -405,25 +434,25 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     // ── Internal helpers ──────────────────────────────────────────────────
 
-    private fun cmd(name: String, block: suspend () -> Unit) {
+    private fun cmd(name: String, @StringRes errorRes: Int, block: suspend () -> Unit) {
         viewModelScope.launch {
             Log.d(TAG, "cmd: $name")
             try {
                 block()
             } catch (e: ApiException) {
                 Log.e(TAG, "API error in $name: ${e.code} ${e.message}")
-                toastMessage = "Error ${e.code}: ${e.message}"
+                toastMessage = getString(errorRes)
             } catch (e: Exception) {
                 Log.e(TAG, "Error in $name: ${e.message}")
-                toastMessage = e.message ?: "Unknown error"
+                toastMessage = getString(errorRes)
             }
         }
     }
 
-    private fun showError(prefix: String, e: Exception) {
-        toastMessage = when (e) {
-            is ApiException -> "$prefix: HTTP ${e.code}"
-            else -> "$prefix: ${e.message}"
-        }
+    private fun showError(@StringRes errorRes: Int) {
+        toastMessage = getString(errorRes)
     }
+
+    private fun getString(@StringRes res: Int, vararg args: Any) =
+        getApplication<Application>().getString(res, *args)
 }

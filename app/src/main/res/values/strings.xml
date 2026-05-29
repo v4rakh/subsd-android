@@ -131,6 +131,38 @@
     <string name="notification_title">subsd</string>
     <string name="notification_text">Satellite connected</string>
 
+    <!-- Error messages -->
+    <string name="error_play">Failed to play</string>
+    <string name="error_pause">Failed to pause</string>
+    <string name="error_play_pause">Failed to toggle playback</string>
+    <string name="error_next">Failed to skip to next track</string>
+    <string name="error_prev">Failed to skip to previous track</string>
+    <string name="error_toggle_shuffle">Failed to toggle shuffle</string>
+    <string name="error_toggle_repeat">Failed to toggle repeat</string>
+    <string name="error_seek">Failed to seek</string>
+    <string name="error_set_volume">Failed to set volume</string>
+    <string name="error_set_replay_gain">Failed to set replay gain</string>
+    <string name="error_jump">Failed to jump to track</string>
+    <string name="error_dequeue">Failed to remove from queue</string>
+    <string name="error_clear_queue">Failed to clear queue</string>
+    <string name="error_move_in_queue">Failed to reorder queue</string>
+    <string name="error_load_artists">Failed to load artists</string>
+    <string name="error_load_albums">Failed to load albums</string>
+    <string name="error_load_songs">Failed to load songs</string>
+    <string name="error_play_song">Failed to play song</string>
+    <string name="error_enqueue_song">Failed to add song to queue</string>
+    <string name="error_play_album">Failed to play album</string>
+    <string name="error_enqueue_album">Failed to add album to queue</string>
+    <string name="error_play_artist">Failed to play artist</string>
+    <string name="error_enqueue_artist">Failed to add artist to queue</string>
+    <string name="error_load_playlist">Failed to load playlist</string>
+    <string name="error_play_playlist">Failed to play playlist</string>
+    <string name="error_enqueue_playlist">Failed to add playlist to queue</string>
+    <string name="error_set_active_satellite">Failed to set active satellite</string>
+    <string name="error_set_satellite_device">Failed to set audio device</string>
+    <string name="error_refresh_satellite_devices">Failed to refresh audio devices</string>
+    <string name="error_set_device">Failed to set audio device</string>
+
     <!-- Plurals -->
     <plurals name="album_count">
         <item quantity="one">%d album</item>
