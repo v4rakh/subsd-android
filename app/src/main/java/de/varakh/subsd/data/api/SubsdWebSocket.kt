@@ -1,7 +1,10 @@
 package de.varakh.subsd.data.api
 
 import android.util.Log
-import de.varakh.subsd.data.model.*
+import de.varakh.subsd.data.model.PlayerState
+import de.varakh.subsd.data.model.SatelliteInfo
+import de.varakh.subsd.data.model.toPlayerState
+import de.varakh.subsd.data.model.toSatelliteList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -10,7 +13,10 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import okhttp3.*
+import okhttp3.Request
+import okhttp3.Response
+import okhttp3.WebSocket
+import okhttp3.WebSocketListener
 import org.json.JSONObject
 
 private const val TAG = "SubsdWebSocket"

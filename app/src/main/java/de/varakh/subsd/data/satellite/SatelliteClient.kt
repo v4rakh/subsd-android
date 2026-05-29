@@ -2,14 +2,31 @@ package de.varakh.subsd.data.satellite
 
 import android.util.Log
 import de.varakh.subsd.data.prefs.Config
-import de.varakh.subsd.proto.*
+import de.varakh.subsd.proto.Command
+import de.varakh.subsd.proto.CommandType
+import de.varakh.subsd.proto.SatelliteMessage
+import de.varakh.subsd.proto.SatelliteServiceGrpcKt
+import de.varakh.subsd.proto.Status
+import de.varakh.subsd.proto.deviceList
+import de.varakh.subsd.proto.heartbeat
+import de.varakh.subsd.proto.playerState
+import de.varakh.subsd.proto.registration
+import de.varakh.subsd.proto.satelliteMessage
+import de.varakh.subsd.proto.trackEnded
 import io.grpc.ManagedChannel
 import io.grpc.ManagedChannelBuilder
 import io.grpc.Metadata
 import io.grpc.stub.MetadataUtils
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 private const val TAG = "SatelliteClient"

@@ -19,7 +19,14 @@ import de.varakh.subsd.R
 import de.varakh.subsd.SubsdApp
 import de.varakh.subsd.data.api.ApiException
 import de.varakh.subsd.data.api.WsEvent
-import de.varakh.subsd.data.model.*
+import de.varakh.subsd.data.model.Album
+import de.varakh.subsd.data.model.Artist
+import de.varakh.subsd.data.model.DevicesResponse
+import de.varakh.subsd.data.model.PlayerState
+import de.varakh.subsd.data.model.Playlist
+import de.varakh.subsd.data.model.SatelliteInfo
+import de.varakh.subsd.data.model.SearchResult
+import de.varakh.subsd.data.model.Song
 import de.varakh.subsd.data.prefs.Config
 import de.varakh.subsd.playback.PlaybackService
 import kotlinx.coroutines.Job
