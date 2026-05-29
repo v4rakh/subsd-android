@@ -11,8 +11,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         name: Checkout
-        with:
-          lfs: true
 
       - name: Decode keystore
         run: |
@@ -31,8 +29,7 @@ jobs:
         if: always()
         run: rm -f fastlane/secrets/key.jks
 
-      - name: Remove keystore
-        if: always()
+      - name: Prepare artifacts
         run: |
           mkdir -p dist
           cp app/build/outputs/apk/release/app-release.apk dist/app-release.apk
