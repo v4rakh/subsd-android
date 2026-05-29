@@ -100,6 +100,9 @@ fun QueueScreen(vm: MainViewModel) {
                         Icon(Icons.Default.DeleteSweep, stringResource(R.string.queue_clear))
                     }
                 }
+                IconButton(onClick = { vm.openSettings() }) {
+                    Icon(Icons.Default.Settings, stringResource(R.string.settings_title))
+                }
             }
         )
 

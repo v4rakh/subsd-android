@@ -39,6 +39,9 @@ private fun PlaylistListScreen(vm: MainViewModel) {
                 IconButton(onClick = { vm.loadPlaylists() }) {
                     Icon(Icons.Default.Refresh, stringResource(R.string.action_refresh))
                 }
+                IconButton(onClick = { vm.openSettings() }) {
+                    Icon(Icons.Default.Settings, stringResource(R.string.settings_title))
+                }
             }
         )
         if (vm.playlistsLoading) {
@@ -110,6 +113,9 @@ private fun PlaylistDetailScreen(vm: MainViewModel) {
                 }
                 IconButton(onClick = { vm.enqueuePlaylist(playlist.id) }) {
                     Icon(Icons.Default.AddToQueue, stringResource(R.string.playlist_queue_desc))
+                }
+                IconButton(onClick = { vm.openSettings() }) {
+                    Icon(Icons.Default.Settings, stringResource(R.string.settings_title))
                 }
             }
         )

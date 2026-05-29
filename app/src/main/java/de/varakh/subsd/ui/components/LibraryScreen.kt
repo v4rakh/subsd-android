@@ -42,6 +42,9 @@ private fun ArtistsScreen(vm: MainViewModel) {
                 IconButton(onClick = { vm.loadArtists() }) {
                     Icon(Icons.Default.Refresh, stringResource(R.string.action_refresh))
                 }
+                IconButton(onClick = { vm.openSettings() }) {
+                    Icon(Icons.Default.Settings, stringResource(R.string.settings_title))
+                }
             }
         )
         if (vm.libraryLoading) {
@@ -115,7 +118,12 @@ private fun AlbumsScreen(vm: MainViewModel) {
                     Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.action_back))
                 }
             },
-            title = { Text(artist?.name ?: stringResource(R.string.library_albums_title), maxLines = 1, overflow = TextOverflow.Ellipsis) }
+            title = { Text(artist?.name ?: stringResource(R.string.library_albums_title), maxLines = 1, overflow = TextOverflow.Ellipsis) },
+            actions = {
+                IconButton(onClick = { vm.openSettings() }) {
+                    Icon(Icons.Default.Settings, stringResource(R.string.settings_title))
+                }
+            }
         )
         if (vm.libraryLoading) {
             LinearProgressIndicator(Modifier.fillMaxWidth())
@@ -189,6 +197,9 @@ private fun TracksScreen(vm: MainViewModel) {
                     IconButton(onClick = { vm.enqueueAlbum(album.id) }) {
                         Icon(Icons.Default.AddToQueue, stringResource(R.string.library_add_album_to_queue))
                     }
+                }
+                IconButton(onClick = { vm.openSettings() }) {
+                    Icon(Icons.Default.Settings, stringResource(R.string.settings_title))
                 }
             }
         )

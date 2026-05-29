@@ -28,12 +28,21 @@ import de.varakh.subsd.data.model.SearchResult
 import de.varakh.subsd.data.model.Song
 import de.varakh.subsd.ui.MainViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(vm: MainViewModel) {
     val focusManager = LocalFocusManager.current
     val focusRequester = remember { FocusRequester() }
 
     Column(Modifier.fillMaxSize()) {
+        TopAppBar(
+            title = { Text(stringResource(R.string.tab_search)) },
+            actions = {
+                IconButton(onClick = { vm.openSettings() }) {
+                    Icon(Icons.Default.Settings, stringResource(R.string.settings_title))
+                }
+            }
+        )
         SearchBar(vm, focusRequester, onSearch = { focusManager.clearFocus() })
 
         if (vm.searchLoading) {
