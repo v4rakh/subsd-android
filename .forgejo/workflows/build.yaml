@@ -10,6 +10,8 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         name: Checkout
+        with:
+          lfs: true
       - name: Build
         run: |
           nix run .#ci-shell -- fastlane android build_debug

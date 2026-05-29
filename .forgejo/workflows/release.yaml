@@ -11,6 +11,8 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         name: Checkout
+        with:
+          lfs: true
 
       - name: Decode keystore
         run: |
