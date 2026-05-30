@@ -287,6 +287,16 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun playSong(id: String) = cmd("playSong", R.string.error_play_song) { app.api.playSong(id) }
     fun enqueueSong(id: String) = cmd("enqueueSong", R.string.error_enqueue_song) { app.api.enqueueSong(id) }
+
+    fun setAlbumRating(id: String, rating: Int) {
+        albums = albums.map { if (it.id == id) it.copy(userRating = rating) else it }
+        cmd("setAlbumRating", R.string.error_set_rating) { app.api.setRating(id, rating) }
+    }
+
+    fun setSongRating(id: String, rating: Int) {
+        songs = songs.map { if (it.id == id) it.copy(userRating = rating) else it }
+        cmd("setSongRating", R.string.error_set_rating) { app.api.setRating(id, rating) }
+    }
     fun playAlbum(id: String) = cmd("playAlbum", R.string.error_play_album) { app.api.playAlbum(id) }
     fun enqueueAlbum(id: String) = cmd("enqueueAlbum", R.string.error_enqueue_album) { app.api.enqueueAlbum(id) }
     fun playArtist(id: String) = cmd("playArtist", R.string.error_play_artist) { app.api.playArtist(id) }

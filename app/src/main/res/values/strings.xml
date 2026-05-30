@@ -12,6 +12,9 @@
     <string name="action_play_playlist">Play</string>
     <string name="action_add_to_queue">Add to queue</string>
     <string name="action_options">Options</string>
+    <string name="action_rate">Rate…</string>
+    <string name="rating_dialog_album_title">Rate album</string>
+    <string name="rating_dialog_song_title">Rate song</string>
     <string name="action_go_to_artist">Go to artist</string>
     <string name="action_go_to_album">Go to album</string>
     <string name="action_show">Show</string>
@@ -162,6 +165,7 @@
     <string name="error_set_satellite_device">Failed to set audio device</string>
     <string name="error_refresh_satellite_devices">Failed to refresh audio devices</string>
     <string name="error_set_device">Failed to set audio device</string>
+    <string name="error_set_rating">Failed to set rating</string>
 
     <!-- Plurals -->
     <plurals name="album_count">

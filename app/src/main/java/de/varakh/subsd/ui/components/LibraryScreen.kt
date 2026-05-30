@@ -1,8 +1,11 @@
 package de.varakh.subsd.ui.components
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.TextButton
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
@@ -140,6 +143,7 @@ private fun AlbumsScreen(vm: MainViewModel) {
 @Composable
 private fun AlbumItem(album: Album, vm: MainViewModel) {
     var showMenu by remember { mutableStateOf(false) }
+    var showRatingDialog by remember { mutableStateOf(false) }
 
     ListItem(
         headlineContent = { Text(album.name, maxLines = 1, overflow = TextOverflow.Ellipsis) },
@@ -166,6 +170,11 @@ private fun AlbumItem(album: Album, vm: MainViewModel) {
                         leadingIcon = { Icon(Icons.Default.AddToQueue, null) },
                         onClick = { vm.enqueueAlbum(album.id); showMenu = false }
                     )
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.action_rate)) },
+                        leadingIcon = { Icon(Icons.Default.Star, null) },
+                        onClick = { showRatingDialog = true; showMenu = false }
+                    )
                 }
             }
         },
@@ -174,6 +183,14 @@ private fun AlbumItem(album: Album, vm: MainViewModel) {
             onLongClick = { showMenu = true }
         )
     )
+    if (showRatingDialog) {
+        RatingDialog(
+            title = stringResource(R.string.rating_dialog_album_title),
+            currentRating = album.userRating,
+            onRate = { vm.setAlbumRating(album.id, it) },
+            onDismiss = { showRatingDialog = false }
+        )
+    }
     HorizontalDivider(thickness = 0.5.dp)
 }
 
@@ -218,6 +235,7 @@ private fun TracksScreen(vm: MainViewModel) {
 @Composable
 private fun SongItem(song: Song, vm: MainViewModel) {
     var showMenu by remember { mutableStateOf(false) }
+    var showRatingDialog by remember { mutableStateOf(false) }
 
     ListItem(
         headlineContent = { Text(song.title, maxLines = 1, overflow = TextOverflow.Ellipsis) },
@@ -246,6 +264,11 @@ private fun SongItem(song: Song, vm: MainViewModel) {
                         leadingIcon = { Icon(Icons.Default.AddToQueue, null) },
                         onClick = { vm.enqueueSong(song.id); showMenu = false }
                     )
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.action_rate)) },
+                        leadingIcon = { Icon(Icons.Default.Star, null) },
+                        onClick = { showRatingDialog = true; showMenu = false }
+                    )
                 }
             }
         },
@@ -254,7 +277,49 @@ private fun SongItem(song: Song, vm: MainViewModel) {
             onLongClick = { showMenu = true }
         )
     )
+    if (showRatingDialog) {
+        RatingDialog(
+            title = stringResource(R.string.rating_dialog_song_title),
+            currentRating = song.userRating,
+            onRate = { vm.setSongRating(song.id, it) },
+            onDismiss = { showRatingDialog = false }
+        )
+    }
     HorizontalDivider(thickness = 0.5.dp)
+}
+
+@Composable
+private fun RatingDialog(title: String, currentRating: Int, onRate: (Int) -> Unit, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(title) },
+        text = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                (1..5).forEach { n ->
+                    IconButton(onClick = {
+                        onRate(if (n == currentRating) 0 else n)
+                        onDismiss()
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Star,
+                            contentDescription = "$n stars",
+                            tint = if (n <= currentRating) Color(0xFFFFD700) else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.25f)
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {},
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.action_cancel))
+            }
+        }
+    )
 }
 
 fun formatDuration(secs: Int): String {

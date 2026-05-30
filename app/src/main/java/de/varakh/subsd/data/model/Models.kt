@@ -21,6 +21,7 @@ data class Album(
     val coverArt: String,
     val year: Int,
     val songCount: Int,
+    val userRating: Int = 0,
     val songs: List<Song> = emptyList()
 )
 
@@ -38,7 +39,8 @@ data class Song(
     val suffix: String = "",
     val bitRate: Int = 0,
     val year: Int = 0,
-    val genre: String = ""
+    val genre: String = "",
+    val userRating: Int = 0
 )
 
 data class Playlist(
@@ -135,6 +137,7 @@ fun JSONObject.toAlbum(): Album = Album(
     coverArt = str("coverArt"),
     year = optInt("year", 0),
     songCount = optInt("songCount", 0),
+    userRating = optInt("userRating", 0),
     songs = optJSONArray("song")?.toSongList() ?: emptyList()
 )
 
@@ -152,7 +155,8 @@ fun JSONObject.toSong(): Song = Song(
     suffix = str("suffix"),
     bitRate = optInt("bitRate", 0),
     year = optInt("year", 0),
-    genre = str("genre")
+    genre = str("genre"),
+    userRating = optInt("userRating", 0)
 )
 
 fun JSONObject.toPlaylist(): Playlist = Playlist(
