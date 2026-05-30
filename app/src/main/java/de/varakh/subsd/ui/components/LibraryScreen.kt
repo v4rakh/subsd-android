@@ -144,6 +144,7 @@ private fun AlbumsScreen(vm: MainViewModel) {
 private fun AlbumItem(album: Album, vm: MainViewModel) {
     var showMenu by remember { mutableStateOf(false) }
     var showRatingDialog by remember { mutableStateOf(false) }
+    var showPlaylistPicker by remember { mutableStateOf(false) }
 
     ListItem(
         headlineContent = { Text(album.name, maxLines = 1, overflow = TextOverflow.Ellipsis) },
@@ -171,6 +172,11 @@ private fun AlbumItem(album: Album, vm: MainViewModel) {
                         onClick = { vm.enqueueAlbum(album.id); showMenu = false }
                     )
                     DropdownMenuItem(
+                        text = { Text(stringResource(R.string.action_add_to_playlist)) },
+                        leadingIcon = { Icon(Icons.Default.PlaylistAdd, null) },
+                        onClick = { showPlaylistPicker = true; showMenu = false }
+                    )
+                    DropdownMenuItem(
                         text = { Text(stringResource(R.string.action_rate)) },
                         leadingIcon = { Icon(Icons.Default.Star, null) },
                         onClick = { showRatingDialog = true; showMenu = false }
@@ -191,6 +197,13 @@ private fun AlbumItem(album: Album, vm: MainViewModel) {
             onDismiss = { showRatingDialog = false }
         )
     }
+    if (showPlaylistPicker) {
+        PlaylistPickerDialog(
+            playlists = vm.playlists,
+            onPick = { vm.addAlbumToPlaylist(it.id, album.id) },
+            onDismiss = { showPlaylistPicker = false }
+        )
+    }
     HorizontalDivider(thickness = 0.5.dp)
 }
 
@@ -198,6 +211,8 @@ private fun AlbumItem(album: Album, vm: MainViewModel) {
 @Composable
 private fun TracksScreen(vm: MainViewModel) {
     val album = vm.currentAlbum
+    var showAlbumPlaylistPicker by remember { mutableStateOf(false) }
+
     Column(Modifier.fillMaxSize()) {
         TopAppBar(
             navigationIcon = {
@@ -214,6 +229,9 @@ private fun TracksScreen(vm: MainViewModel) {
                     IconButton(onClick = { vm.enqueueAlbum(album.id) }) {
                         Icon(Icons.Default.AddToQueue, stringResource(R.string.library_add_album_to_queue))
                     }
+                    IconButton(onClick = { showAlbumPlaylistPicker = true }) {
+                        Icon(Icons.Default.PlaylistAdd, stringResource(R.string.action_add_to_playlist))
+                    }
                 }
                 IconButton(onClick = { vm.openSettings() }) {
                     Icon(Icons.Default.Settings, stringResource(R.string.settings_title))
@@ -229,6 +247,13 @@ private fun TracksScreen(vm: MainViewModel) {
             }
         }
     }
+    if (showAlbumPlaylistPicker && album != null) {
+        PlaylistPickerDialog(
+            playlists = vm.playlists,
+            onPick = { vm.addAlbumToPlaylist(it.id, album.id) },
+            onDismiss = { showAlbumPlaylistPicker = false }
+        )
+    }
 }
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -236,6 +261,7 @@ private fun TracksScreen(vm: MainViewModel) {
 private fun SongItem(song: Song, vm: MainViewModel) {
     var showMenu by remember { mutableStateOf(false) }
     var showRatingDialog by remember { mutableStateOf(false) }
+    var showPlaylistPicker by remember { mutableStateOf(false) }
 
     ListItem(
         headlineContent = { Text(song.title, maxLines = 1, overflow = TextOverflow.Ellipsis) },
@@ -265,6 +291,11 @@ private fun SongItem(song: Song, vm: MainViewModel) {
                         onClick = { vm.enqueueSong(song.id); showMenu = false }
                     )
                     DropdownMenuItem(
+                        text = { Text(stringResource(R.string.action_add_to_playlist)) },
+                        leadingIcon = { Icon(Icons.Default.PlaylistAdd, null) },
+                        onClick = { showPlaylistPicker = true; showMenu = false }
+                    )
+                    DropdownMenuItem(
                         text = { Text(stringResource(R.string.action_rate)) },
                         leadingIcon = { Icon(Icons.Default.Star, null) },
                         onClick = { showRatingDialog = true; showMenu = false }
@@ -283,6 +314,13 @@ private fun SongItem(song: Song, vm: MainViewModel) {
             currentRating = song.userRating,
             onRate = { vm.setSongRating(song.id, it) },
             onDismiss = { showRatingDialog = false }
+        )
+    }
+    if (showPlaylistPicker) {
+        PlaylistPickerDialog(
+            playlists = vm.playlists,
+            onPick = { vm.addSongsToPlaylist(it.id, song.id) },
+            onDismiss = { showPlaylistPicker = false }
         )
     }
     HorizontalDivider(thickness = 0.5.dp)

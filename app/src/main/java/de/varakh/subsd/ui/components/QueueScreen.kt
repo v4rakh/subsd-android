@@ -30,6 +30,8 @@ fun QueueScreen(vm: MainViewModel) {
     val state = vm.playerState
     val queue = state.queue
     val lazyListState = rememberLazyListState()
+    var showSaveDialog by remember { mutableStateOf(false) }
+    var savePlaylistName by remember { mutableStateOf("") }
 
     // Local copy for optimistic drag-and-drop reordering.
     // Each entry carries a slot key (Long) that is unique and stable for the item's lifetime,
@@ -96,6 +98,9 @@ fun QueueScreen(vm: MainViewModel) {
                     )
                 }
                 if (queue.isNotEmpty()) {
+                    IconButton(onClick = { savePlaylistName = ""; showSaveDialog = true }) {
+                        Icon(Icons.Default.PlaylistAdd, stringResource(R.string.action_save_queue_as_playlist))
+                    }
                     IconButton(onClick = { vm.clearQueue() }) {
                         Icon(Icons.Default.DeleteSweep, stringResource(R.string.queue_clear))
                     }
@@ -131,6 +136,32 @@ fun QueueScreen(vm: MainViewModel) {
                 }
             }
         }
+    }
+
+    if (showSaveDialog) {
+        AlertDialog(
+            onDismissRequest = { showSaveDialog = false },
+            title = { Text(stringResource(R.string.dialog_save_queue_as_playlist_title)) },
+            text = {
+                OutlinedTextField(
+                    value = savePlaylistName,
+                    onValueChange = { savePlaylistName = it },
+                    label = { Text(stringResource(R.string.dialog_playlist_name_hint)) },
+                    singleLine = true
+                )
+            },
+            confirmButton = {
+                TextButton(
+                    onClick = { vm.saveQueueAsPlaylist(savePlaylistName.trim()); showSaveDialog = false },
+                    enabled = savePlaylistName.isNotBlank()
+                ) { Text(stringResource(R.string.action_create)) }
+            },
+            dismissButton = {
+                TextButton(onClick = { showSaveDialog = false }) {
+                    Text(stringResource(R.string.action_cancel))
+                }
+            }
+        )
     }
 }
 

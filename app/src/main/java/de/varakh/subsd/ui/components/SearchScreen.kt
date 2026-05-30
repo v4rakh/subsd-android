@@ -168,6 +168,7 @@ private fun SearchArtistItem(artist: Artist, vm: MainViewModel) {
 @Composable
 private fun SearchAlbumItem(album: Album, vm: MainViewModel) {
     var showMenu by remember { mutableStateOf(false) }
+    var showPlaylistPicker by remember { mutableStateOf(false) }
     ListItem(
         headlineContent = { Text(album.name, maxLines = 1, overflow = TextOverflow.Ellipsis) },
         supportingContent = {
@@ -185,6 +186,9 @@ private fun SearchAlbumItem(album: Album, vm: MainViewModel) {
                     DropdownMenuItem(text = { Text(stringResource(R.string.action_add_to_queue)) },
                         leadingIcon = { Icon(Icons.Default.AddToQueue, null) },
                         onClick = { vm.enqueueAlbum(album.id); showMenu = false })
+                    DropdownMenuItem(text = { Text(stringResource(R.string.action_add_to_playlist)) },
+                        leadingIcon = { Icon(Icons.Default.PlaylistAdd, null) },
+                        onClick = { showPlaylistPicker = true; showMenu = false })
                     DropdownMenuItem(text = { Text(stringResource(R.string.action_go_to_artist)) },
                         leadingIcon = { Icon(Icons.Default.Person, null) },
                         onClick = { vm.goToArtist(album.artistId, album.artist); showMenu = false })
@@ -193,12 +197,20 @@ private fun SearchAlbumItem(album: Album, vm: MainViewModel) {
         },
         modifier = Modifier.clickable { vm.loadSongs(album) }
     )
+    if (showPlaylistPicker) {
+        PlaylistPickerDialog(
+            playlists = vm.playlists,
+            onPick = { vm.addAlbumToPlaylist(it.id, album.id) },
+            onDismiss = { showPlaylistPicker = false }
+        )
+    }
     HorizontalDivider(thickness = 0.5.dp)
 }
 
 @Composable
 private fun SearchSongItem(song: Song, vm: MainViewModel) {
     var showMenu by remember { mutableStateOf(false) }
+    var showPlaylistPicker by remember { mutableStateOf(false) }
     ListItem(
         headlineContent = { Text(song.title, maxLines = 1, overflow = TextOverflow.Ellipsis) },
         supportingContent = {
@@ -217,6 +229,9 @@ private fun SearchSongItem(song: Song, vm: MainViewModel) {
                     DropdownMenuItem(text = { Text(stringResource(R.string.action_add_to_queue)) },
                         leadingIcon = { Icon(Icons.Default.AddToQueue, null) },
                         onClick = { vm.enqueueSong(song.id); showMenu = false })
+                    DropdownMenuItem(text = { Text(stringResource(R.string.action_add_to_playlist)) },
+                        leadingIcon = { Icon(Icons.Default.PlaylistAdd, null) },
+                        onClick = { showPlaylistPicker = true; showMenu = false })
                     DropdownMenuItem(text = { Text(stringResource(R.string.action_go_to_album)) },
                         leadingIcon = { Icon(Icons.Default.Album, null) },
                         onClick = { vm.goToAlbum(song.albumId, song.album, song.artistId); showMenu = false })
@@ -228,5 +243,12 @@ private fun SearchSongItem(song: Song, vm: MainViewModel) {
         },
         modifier = Modifier.clickable { vm.playSong(song.id) }
     )
+    if (showPlaylistPicker) {
+        PlaylistPickerDialog(
+            playlists = vm.playlists,
+            onPick = { vm.addSongsToPlaylist(it.id, song.id) },
+            onDismiss = { showPlaylistPicker = false }
+        )
+    }
     HorizontalDivider(thickness = 0.5.dp)
 }

@@ -357,6 +357,60 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     fun playPlaylist(id: String) = cmd("playPlaylist", R.string.error_play_playlist) { app.api.playPlaylist(id) }
     fun enqueuePlaylist(id: String) = cmd("enqueuePlaylist", R.string.error_enqueue_playlist) { app.api.enqueuePlaylist(id) }
 
+    fun createPlaylist(name: String) = cmd("createPlaylist", R.string.error_create_playlist) {
+        app.api.createPlaylist(name)
+        playlists = app.api.getPlaylists()
+    }
+
+    fun renamePlaylist(id: String, newName: String) = cmd("renamePlaylist", R.string.error_rename_playlist) {
+        app.api.renamePlaylist(id, newName)
+        playlists = playlists.map { if (it.id == id) it.copy(name = newName) else it }
+        currentPlaylist = currentPlaylist?.let { if (it.id == id) it.copy(name = newName) else it }
+    }
+
+    fun deletePlaylist(id: String) = cmd("deletePlaylist", R.string.error_delete_playlist) {
+        app.api.deletePlaylist(id)
+        playlists = playlists.filter { it.id != id }
+        if (currentPlaylist?.id == id) { currentPlaylist = null; playlistView = false }
+    }
+
+    fun removeSongFromPlaylist(playlistId: String, index: Int) = cmd("removeSongFromPlaylist", R.string.error_remove_from_playlist) {
+        app.api.removeSongFromPlaylist(playlistId, index)
+        currentPlaylist = currentPlaylist?.let {
+            if (it.id == playlistId) it.copy(songs = it.songs.toMutableList().also { s -> s.removeAt(index) }) else it
+        }
+        playlists = playlists.map { if (it.id == playlistId) it.copy(songCount = maxOf(0, it.songCount - 1)) else it }
+    }
+
+    fun reorderPlaylist(id: String, from: Int, to: Int) {
+        val pl = currentPlaylist ?: return
+        if (pl.id != id) return
+        val reordered = pl.songs.toMutableList()
+        val moved = reordered.removeAt(from)
+        reordered.add(to, moved)
+        currentPlaylist = pl.copy(songs = reordered)
+        cmd("reorderPlaylist", R.string.error_reorder_playlist) {
+            app.api.reorderPlaylist(id, reordered.map { it.id })
+        }
+    }
+
+    fun appendQueueToPlaylist(id: String) = cmd("appendQueueToPlaylist", R.string.error_append_queue) {
+        app.api.appendQueueToPlaylist(id)
+    }
+
+    fun saveQueueAsPlaylist(name: String) = cmd("saveQueueAsPlaylist", R.string.error_save_queue_as_playlist) {
+        app.api.saveQueueAsPlaylist(name)
+        playlists = app.api.getPlaylists()
+    }
+
+    fun addSongsToPlaylist(playlistId: String, songId: String) = cmd("addSongsToPlaylist", R.string.error_add_to_playlist) {
+        app.api.addSongsToPlaylist(playlistId, listOf(songId))
+    }
+
+    fun addAlbumToPlaylist(playlistId: String, albumId: String) = cmd("addAlbumToPlaylist", R.string.error_add_to_playlist) {
+        app.api.addAlbumToPlaylist(playlistId, albumId)
+    }
+
     // ── Satellites ────────────────────────────────────────────────────────
 
     fun setActiveSatellite(name: String) {

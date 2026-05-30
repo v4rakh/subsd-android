@@ -104,6 +104,23 @@
     <string name="playlists_empty">No playlists</string>
     <string name="playlist_play_desc">Play playlist</string>
     <string name="playlist_queue_desc">Add playlist to queue</string>
+    <string name="action_new_playlist">New playlist</string>
+    <string name="action_rename_playlist">Rename</string>
+    <string name="action_delete_playlist">Delete</string>
+    <string name="action_append_queue_to_playlist">Append queue</string>
+    <string name="action_remove_from_playlist">Remove from playlist</string>
+    <string name="action_save_queue_as_playlist">Save queue as playlist</string>
+    <string name="dialog_create_playlist_title">New playlist</string>
+    <string name="dialog_rename_playlist_title">Rename playlist</string>
+    <string name="dialog_delete_playlist_title">Delete playlist</string>
+    <string name="dialog_delete_playlist_msg">Delete \"%s\"?</string>
+    <string name="dialog_playlist_name_hint">Playlist name</string>
+    <string name="dialog_save_queue_as_playlist_title">Save queue as playlist</string>
+    <string name="action_add_to_playlist">Add to playlist</string>
+    <string name="dialog_pick_playlist_title">Add to playlist</string>
+    <string name="action_create">Create</string>
+    <string name="action_rename">Rename</string>
+    <string name="action_delete">Delete</string>
 
     <!-- Settings -->
     <string name="settings_title">Settings</string>
@@ -166,6 +183,14 @@
     <string name="error_refresh_satellite_devices">Failed to refresh audio devices</string>
     <string name="error_set_device">Failed to set audio device</string>
     <string name="error_set_rating">Failed to set rating</string>
+    <string name="error_create_playlist">Failed to create playlist</string>
+    <string name="error_rename_playlist">Failed to rename playlist</string>
+    <string name="error_delete_playlist">Failed to delete playlist</string>
+    <string name="error_remove_from_playlist">Failed to remove song from playlist</string>
+    <string name="error_reorder_playlist">Failed to reorder playlist</string>
+    <string name="error_append_queue">Failed to append queue to playlist</string>
+    <string name="error_save_queue_as_playlist">Failed to save queue as playlist</string>
+    <string name="error_add_to_playlist">Failed to add to playlist</string>
 
     <!-- Plurals -->
     <plurals name="album_count">

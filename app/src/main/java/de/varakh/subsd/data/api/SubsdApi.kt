@@ -142,6 +142,38 @@ class SubsdApi(baseUrl: String) {
         JSONObject(get("/api/v1/playlist/$id")).toPlaylist()
     }
 
+    suspend fun createPlaylist(name: String): Playlist = withContext(Dispatchers.IO) {
+        val body = JSONObject().put("name", name).put("songIds", JSONArray()).toString()
+        JSONObject(postJson("/api/v1/playlist", body)).toPlaylist()
+    }
+
+    suspend fun renamePlaylist(id: String, newName: String) =
+        putJson("/api/v1/playlist/$id", JSONObject().put("name", newName).toString())
+
+    suspend fun addSongsToPlaylist(id: String, songIds: List<String>) {
+        val arr = JSONArray().also { songIds.forEach(it::put) }
+        postJson("/api/v1/playlist/$id/songs", JSONObject().put("songIds", arr).toString())
+    }
+
+    suspend fun removeSongFromPlaylist(id: String, index: Int) = delete("/api/v1/playlist/$id/songs/$index")
+
+    suspend fun reorderPlaylist(id: String, newSongIds: List<String>) {
+        val arr = JSONArray().also { newSongIds.forEach(it::put) }
+        putJson("/api/v1/playlist/$id/songs", JSONObject().put("songIds", arr).toString())
+    }
+
+    suspend fun deletePlaylist(id: String) = delete("/api/v1/playlist/$id")
+
+    suspend fun appendQueueToPlaylist(id: String) = post("/api/v1/playlist/$id/add-queue")
+
+    suspend fun addAlbumToPlaylist(playlistId: String, albumId: String) =
+        post("/api/v1/playlist/$playlistId/album/$albumId")
+
+    suspend fun saveQueueAsPlaylist(name: String): Playlist = withContext(Dispatchers.IO) {
+        val body = JSONObject().put("name", name).toString()
+        JSONObject(postJson("/api/v1/playlist/from-queue", body)).toPlaylist()
+    }
+
     // ── Devices ───────────────────────────────────────────────────────────
 
     suspend fun getDevices(): DevicesResponse = withContext(Dispatchers.IO) {
@@ -201,6 +233,13 @@ class SubsdApi(baseUrl: String) {
 
     private suspend fun postJson(path: String, json: String): String = withContext(Dispatchers.IO) {
         val req = Request.Builder().url("$base$path").post(json.toRequestBody(JSON_TYPE)).build()
+        val resp = client.newCall(req).execute()
+        if (!resp.isSuccessful) throw ApiException(resp.code, resp.message)
+        resp.body?.string() ?: ""
+    }
+
+    private suspend fun putJson(path: String, json: String): String = withContext(Dispatchers.IO) {
+        val req = Request.Builder().url("$base$path").put(json.toRequestBody(JSON_TYPE)).build()
         val resp = client.newCall(req).execute()
         if (!resp.isSuccessful) throw ApiException(resp.code, resp.message)
         resp.body?.string() ?: ""
