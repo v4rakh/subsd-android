@@ -73,6 +73,9 @@
     <string name="player_replaygain_off">Off</string>
     <string name="player_replaygain_track">Track</string>
     <string name="player_replaygain_album">Album</string>
+    <string name="player_lyrics">Lyrics</string>
+    <string name="player_lyrics_loading">Loading lyrics…</string>
+    <string name="player_lyrics_none">No lyrics available</string>
 
     <!-- Queue screen -->
     <string name="queue_title">Queue</string>

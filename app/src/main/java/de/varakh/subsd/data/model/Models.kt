@@ -107,6 +107,18 @@ data class SatelliteInfo(
     val activeDevice: String
 )
 
+// ── Lyrics ──────────────────────────────────────────────────────────────────
+
+data class LyricLine(
+    val start: Int,
+    val value: String
+)
+
+data class LyricsResult(
+    val synced: Boolean,
+    val lines: List<LyricLine>
+)
+
 // ── Search ─────────────────────────────────────────────────────────────────
 
 data class SearchResult(
@@ -116,6 +128,16 @@ data class SearchResult(
 ) {
     val isEmpty: Boolean get() = artists.isEmpty() && albums.isEmpty() && songs.isEmpty()
 }
+
+// ── Runtime settings ───────────────────────────────────────────────────────────────────
+
+data class Settings(
+    val lyricsEnabled: Boolean = false
+)
+
+fun JSONObject.toSettings(): Settings = Settings(
+    lyricsEnabled = optBoolean("lyricsEnabled", false)
+)
 
 // ── JSON parsing helpers ───────────────────────────────────────────────────
 
@@ -204,9 +226,20 @@ fun JSONObject.toSatelliteInfo(): SatelliteInfo = SatelliteInfo(
     activeDevice = str("activeDevice")
 )
 
+fun JSONObject.toLyricLine(): LyricLine = LyricLine(
+    start = optInt("start", 0),
+    value = str("value")
+)
+
+fun JSONObject.toLyricsResult(): LyricsResult = LyricsResult(
+    synced = optBoolean("synced", false),
+    lines = optJSONArray("lines")?.toLyricLineList() ?: emptyList()
+)
+
 fun JSONArray.toArtistList(): List<Artist> = (0 until length()).map { getJSONObject(it).toArtist() }
 fun JSONArray.toAlbumList(): List<Album> = (0 until length()).map { getJSONObject(it).toAlbum() }
 fun JSONArray.toSongList(): List<Song> = (0 until length()).map { getJSONObject(it).toSong() }
 fun JSONArray.toTrackList(): List<Track> = (0 until length()).map { getJSONObject(it).toTrack() }
 fun JSONArray.toPlaylistList(): List<Playlist> = (0 until length()).map { getJSONObject(it).toPlaylist() }
 fun JSONArray.toSatelliteList(): List<SatelliteInfo> = (0 until length()).map { getJSONObject(it).toSatelliteInfo() }
+fun JSONArray.toLyricLineList(): List<LyricLine> = (0 until length()).map { getJSONObject(it).toLyricLine() }

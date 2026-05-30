@@ -3,6 +3,8 @@ package de.varakh.subsd.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.VolumeDown
@@ -89,10 +91,52 @@ private fun MiniPlayer(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ExpandedPlayer(vm: MainViewModel, state: PlayerState, onCollapse: () -> Unit) {
     val track = state.currentTrack ?: return
     var seekValue by remember(state.currentIdx) { mutableStateOf<Float?>(null) }
+    var showLyrics by remember { mutableStateOf(false) }
+
+    LaunchedEffect(showLyrics, track.id) {
+        if (showLyrics) vm.loadLyrics(track.id)
+    }
+
+    if (showLyrics) {
+        ModalBottomSheet(onDismissRequest = { showLyrics = false; vm.closeLyrics() }) {
+            Column(modifier = Modifier.padding(horizontal = 24.dp).padding(bottom = 32.dp)) {
+                Text(
+                    stringResource(R.string.player_lyrics),
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+                when {
+                    vm.lyricsLoading -> Text(
+                        stringResource(R.string.player_lyrics_loading),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    vm.lyrics == null -> Text(
+                        stringResource(R.string.player_lyrics_none),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                    else -> {
+                        val lines = vm.lyrics?.lines ?: emptyList()
+                        LazyColumn {
+                            items(lines) { line ->
+                                Text(
+                                    text = line.value.ifBlank { "\u00a0" },
+                                    style = MaterialTheme.typography.bodyMedium,
+                                    modifier = Modifier.padding(vertical = 2.dp)
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     Box(
         modifier = Modifier
@@ -115,7 +159,13 @@ private fun ExpandedPlayer(vm: MainViewModel, state: PlayerState, onCollapse: ()
                     Icon(Icons.Default.KeyboardArrowDown, stringResource(R.string.player_collapse))
                 }
                 Text(stringResource(R.string.player_now_playing), style = MaterialTheme.typography.titleMedium)
-                Spacer(Modifier.width(48.dp))
+                if (vm.lyricsEnabled) {
+                    IconButton(onClick = { showLyrics = true }) {
+                        Icon(Icons.Default.Lyrics, stringResource(R.string.player_lyrics))
+                    }
+                } else {
+                    Spacer(Modifier.width(48.dp))
+                }
             }
 
             Spacer(Modifier.height(24.dp))

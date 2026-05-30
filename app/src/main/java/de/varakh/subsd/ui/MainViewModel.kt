@@ -22,6 +22,7 @@ import de.varakh.subsd.data.api.WsEvent
 import de.varakh.subsd.data.model.Album
 import de.varakh.subsd.data.model.Artist
 import de.varakh.subsd.data.model.DevicesResponse
+import de.varakh.subsd.data.model.LyricsResult
 import de.varakh.subsd.data.model.PlayerState
 import de.varakh.subsd.data.model.Playlist
 import de.varakh.subsd.data.model.SatelliteInfo
@@ -103,6 +104,12 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     var devices by mutableStateOf(DevicesResponse(emptyList(), "")); private set
 
+    // ── Lyrics ────────────────────────────────────────────────────────────
+
+    var lyrics by mutableStateOf<LyricsResult?>(null); private set
+    var lyricsLoading by mutableStateOf(false); private set
+    var lyricsEnabled by mutableStateOf(false); private set
+
     // ── Toast messages ────────────────────────────────────────────────────
 
     var toastMessage by mutableStateOf<String?>(null); private set
@@ -138,6 +145,9 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                     }
                     loadArtists()
                     loadPlaylists()
+                    viewModelScope.launch {
+                        app.api.getSettings()?.let { lyricsEnabled = it.lyricsEnabled }
+                    }
                 }
             }
         }
@@ -477,6 +487,27 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 showError(R.string.error_set_device)
             }
         }
+    }
+
+    // ── Lyrics ────────────────────────────────────────────────────────────
+
+    fun loadLyrics(songId: String) {
+        viewModelScope.launch {
+            Log.i(TAG, "Loading lyrics for song $songId")
+            lyricsLoading = true
+            lyrics = null
+            try {
+                lyrics = app.api.getLyrics(songId)
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to load lyrics: ${e.message}")
+            }
+            lyricsLoading = false
+        }
+    }
+
+    fun closeLyrics() {
+        lyrics = null
+        lyricsLoading = false
     }
 
     // ── Settings ──────────────────────────────────────────────────────────

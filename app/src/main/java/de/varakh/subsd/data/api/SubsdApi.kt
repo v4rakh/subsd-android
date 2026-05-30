@@ -12,6 +12,10 @@ import de.varakh.subsd.data.model.toAlbum
 import de.varakh.subsd.data.model.toAlbumList
 import de.varakh.subsd.data.model.toArtist
 import de.varakh.subsd.data.model.toArtistList
+import de.varakh.subsd.data.model.LyricsResult
+import de.varakh.subsd.data.model.Settings
+import de.varakh.subsd.data.model.toLyricsResult
+import de.varakh.subsd.data.model.toSettings
 import de.varakh.subsd.data.model.toPlaylist
 import de.varakh.subsd.data.model.toPlaylistList
 import de.varakh.subsd.data.model.toPlayerState
@@ -172,6 +176,24 @@ class SubsdApi(baseUrl: String) {
     suspend fun saveQueueAsPlaylist(name: String): Playlist = withContext(Dispatchers.IO) {
         val body = JSONObject().put("name", name).toString()
         JSONObject(postJson("/api/v1/playlist/from-queue", body)).toPlaylist()
+    }
+
+    // ── Lyrics ────────────────────────────────────────────────────────────────────────────────────
+
+    suspend fun getLyrics(songId: String): LyricsResult? = withContext(Dispatchers.IO) {
+        try {
+            val resp = client.newCall(Request.Builder().url("$base/api/v1/lyrics/$songId").build()).execute()
+            if (resp.code == 404) return@withContext null
+            if (!resp.isSuccessful) throw ApiException(resp.code, resp.message)
+            val body = resp.body?.string() ?: return@withContext null
+            JSONObject(body).toLyricsResult()
+        } catch (_: ApiException) { null } catch (_: Exception) { null }
+    }
+
+    // ── Settings ───────────────────────────────────────────────────────────────────────────────────
+
+    suspend fun getSettings(): Settings? = withContext(Dispatchers.IO) {
+        try { JSONObject(get("/api/v1/settings")).toSettings() } catch (_: Exception) { null }
     }
 
     // ── Devices ───────────────────────────────────────────────────────────
