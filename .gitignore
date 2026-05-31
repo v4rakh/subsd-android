@@ -25,6 +25,9 @@ fastlane/secrets/*
 !fastlane/secrets/signing.env.example
 fastlane/report.*
 
+# Changelogs
+CHANGELOG.md
+
 # AI
 .claude/
 CLAUDE.md

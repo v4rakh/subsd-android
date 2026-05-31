@@ -15,7 +15,7 @@ android {
         minSdk = 26
         targetSdk = 35
         versionCode = 3
-        versionName = "0.1.2"
+        versionName = "0.2.0"
     }
 
     // Release signing — reads from env vars set via fastlane/secrets/signing.env
@@ -84,6 +84,13 @@ protobuf {
             task.builtins {
                 create("java") { option("lite") }
                 create("kotlin") { option("lite") }
+            }
+            // Workaround: CI cache restore strips execute permissions from protoc plugin binaries
+            task.doFirst {
+                fileTree(gradle.gradleUserHomeDir) {
+                    include("caches/modules-2/files-2.1/io.grpc/**/*.exe")
+                    include("caches/modules-2/files-2.1/com.google.protobuf/**/*.exe")
+                }.forEach { f -> f.setExecutable(true) }
             }
         }
     }
