@@ -69,10 +69,10 @@ protobuf {
     }
     plugins {
         create("grpc") {
-            artifact = "io.grpc:protoc-gen-grpc-java:1.69.0"
+            artifact = "io.grpc:protoc-gen-grpc-java:1.69.1"
         }
         create("grpckt") {
-            artifact = "io.grpc:protoc-gen-grpc-kotlin:1.4.1:jdk8@jar"
+            artifact = "io.grpc:protoc-gen-grpc-kotlin:1.4.3:jdk8@jar"
         }
     }
     generateProtoTasks {
@@ -133,8 +133,8 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.1.1")
 
     // gRPC (satellite protocol)
-    implementation("io.grpc:grpc-kotlin-stub:1.4.1")
-    implementation("io.grpc:grpc-okhttp:1.69.0")
-    implementation("io.grpc:grpc-protobuf-lite:1.69.0")
+    implementation("io.grpc:grpc-kotlin-stub:1.4.3")
+    implementation("io.grpc:grpc-okhttp:1.69.1")
+    implementation("io.grpc:grpc-protobuf-lite:1.69.1")
     implementation("com.google.protobuf:protobuf-kotlin-lite:4.29.1")
 }
