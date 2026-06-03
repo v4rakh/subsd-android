@@ -36,7 +36,6 @@
             export ANDROID_SDK_ROOT="${androidSdk}/libexec/android-sdk"
             export ANDROID_HOME="${androidSdk}/libexec/android-sdk"
             export JAVA_HOME="${pkgs.jdk17}"
-            export GRADLE_OPTS="-Dorg.gradle.jvmargs=-Xmx2g"
           '';
 
           # Android SDK tooling expects a standard FHS filesystem layout,
@@ -61,6 +60,15 @@
           # Usage:
           #   interactive : nix develop .#ci
           #   non-interactive: nix run .#ci-shell -- fastlane build
+          androidCiEnvVars = ''
+            export ANDROID_SDK_ROOT="${androidSdk}/libexec/android-sdk"
+            export ANDROID_HOME="${androidSdk}/libexec/android-sdk"
+            export JAVA_HOME="${pkgs.jdk17}"
+            export CI="true"
+            export TERM="dumb"
+            export FASTLANE_SKIP_UPDATE_CHECK="true"
+            export GRADLE_USER_HOME="$HOME/.gradle"
+          '';
           ciFhs = pkgs.buildFHSEnv {
             name = "android-ci-fhs";
             targetPkgs = _: [
@@ -70,7 +78,15 @@
               pkgs.fastlane
               pkgs.ruby
             ];
-            profile = androidEnvVars;
+            profile = androidCiEnvVars;
+            # Bind-mount $HOME into the FHS sandbox so Gradle and pub caches
+            # written to $HOME/.gradle and $HOME/.pub-cache persist across runs.
+            # $HOME is a shell variable expanded at runtime, not a Nix path.
+            extraBwrapArgs = [
+              "--bind"
+              "$HOME"
+              "$HOME"
+            ];
             # Pass-through args so non-interactive invocations work:
             #   nix run .#ci-shell -- <cmd>  →  exec <cmd> inside FHS
             runScript = pkgs.writeShellScript "ci-entrypoint" ''
