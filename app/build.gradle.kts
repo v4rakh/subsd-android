@@ -65,7 +65,7 @@ android {
 
 protobuf {
     protoc {
-        artifact = "com.google.protobuf:protoc:4.29.1"
+        artifact = "com.google.protobuf:protoc:4.29.6"
     }
     plugins {
         create("grpc") {
@@ -136,5 +136,5 @@ dependencies {
     implementation("io.grpc:grpc-kotlin-stub:1.4.3")
     implementation("io.grpc:grpc-okhttp:1.69.1")
     implementation("io.grpc:grpc-protobuf-lite:1.69.1")
-    implementation("com.google.protobuf:protobuf-kotlin-lite:4.29.1")
+    implementation("com.google.protobuf:protobuf-kotlin-lite:4.29.6")
 }
