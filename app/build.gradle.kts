@@ -130,7 +130,7 @@ dependencies {
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.1.0")
 
     // Preferences
-    implementation("androidx.datastore:datastore-preferences:1.1.1")
+    implementation("androidx.datastore:datastore-preferences:1.1.7")
 
     // gRPC (satellite protocol)
     implementation("io.grpc:grpc-kotlin-stub:1.4.3")
