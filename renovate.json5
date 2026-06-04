@@ -18,12 +18,14 @@
         "group:monorepos",
         "group:recommended",
         "local>msm/renovate-presets//presets/github-actions-ignore.json",
+        "local>msm/renovate-presets//presets/gradlewrapper-major-automerge.json",
+        "local>msm/renovate-presets//presets/gradlewrapper-minor-automerge.json",
+        "local>msm/renovate-presets//presets/gradlewrapper-patch-automerge.json",
+        "local>msm/renovate-presets//presets/java-major.json",
+        "local>msm/renovate-presets//presets/java-minor-group-automerge.json",
+        "local>msm/renovate-presets//presets/java-patch-group-automerge.json",
     ],
     packageRules: [
-        {
-            matchUpdateTypes: ["patch"],
-            automerge: true,
-        },
         {
             matchPackageNames: ["org.jetbrains.kotlin.android", "org.jetbrains.kotlin.plugin.compose"],
             groupName: "Kotlin",
