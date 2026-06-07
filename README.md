@@ -87,7 +87,3 @@ When release is done, bump version properly in `app/build.gradle.kts` for the ne
 - **Image loading**: Coil 3, sharing the same OkHttp client as the API so session cookies are
   forwarded automatically for cover art requests
 - **Preferences**: Jetpack DataStore
-
-## License
-
-See the [subsd](https://git.myservermanager.com/varakh/subsd) repository for licensing information.
