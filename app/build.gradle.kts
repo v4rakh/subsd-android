@@ -61,6 +61,14 @@ android {
     buildFeatures {
         compose = true
     }
+
+    // see https://android.izzysoft.de/articles/named/iod-scan-apkchecks#blobs
+    dependenciesInfo {
+        // Disable including dependency metadata when building APKs
+        includeInApk = false
+        // Disable including dependency metadata when building Android App Bundles
+        includeInBundle = false
+    }
 }
 
 protobuf {
