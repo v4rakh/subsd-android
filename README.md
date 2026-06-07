@@ -5,6 +5,10 @@ server daemon from Subsonic-compatible libraries and a satellite playback system
 
 See [screenshots](./fastlane/metadata/android/en-US/images/phoneScreenshots/).
 
+The main git repository is hosted
+at [https://git.myservermanager.com/varakh/subsd-android](https://git.myservermanager.com/varakh/subsd-android).
+Other repositories are mirrors and pull requests, issues, and planning are managed there.
+
 ## Features
 
 - Browse your music library by artist and album
