@@ -14,8 +14,8 @@ android {
         applicationId = "de.varakh.subsd"
         minSdk = 26
         targetSdk = 35
-        versionCode = 4
-        versionName = "0.2.1"
+        versionCode = 5
+        versionName = "0.2.2"
     }
 
     // Release signing — reads from env vars set via fastlane/secrets/signing.env
