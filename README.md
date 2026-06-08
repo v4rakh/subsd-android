@@ -20,6 +20,10 @@ Other repositories are mirrors and pull requests, issues, and planning are manag
 - **Satellite mode**: the app registers itself as a satellite over gRPC, receives playback commands
   from the server, and reports player state back in real time
 
+## Download
+
+[<img src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png" alt="Get it on Obtainium" height="60">](https://apps.obtainium.imranr.dev/redirect?r=obtainium%3A%2F%2Fapp%2F%7B%22id%22%3A%22de.varakh.subsd%22%2C%22url%22%3A%22https%3A%2F%2Fgit.myservermanager.com%2Fvarakh%2Fsubsd-android%22%2C%22author%22%3A%22varakh%22%2C%22name%22%3A%22subsd-android%22%2C%22additionalSettings%22%3A%22%7B%7D%22%7D)
+
 ## Requirements
 
 - Android 8.0 (API 26) or higher
