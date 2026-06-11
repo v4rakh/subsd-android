@@ -119,8 +119,8 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-tooling")
 
     // ExoPlayer + MediaSession (required for mediaPlayback foreground service type on API 35+)
-    implementation("androidx.media3:media3-exoplayer:1.6.1")
-    implementation("androidx.media3:media3-session:1.6.1")
+    implementation("androidx.media3:media3-exoplayer:1.10.1")
+    implementation("androidx.media3:media3-session:1.10.1")
 
     // Queue drag-and-drop reordering
     implementation("sh.calvin.reorderable:reorderable:2.4.3")
