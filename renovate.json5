@@ -23,6 +23,7 @@
     "local>msm/renovate-presets//presets/java-major.json",
     "local>msm/renovate-presets//presets/java-minor-group-automerge.json",
     "local>msm/renovate-presets//presets/java-patch-group-automerge.json",
+    "local>msm/renovate-presets//presets/github-actions-recommended.json",
   ],
   packageRules: [
     {
