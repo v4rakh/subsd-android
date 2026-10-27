@@ -126,7 +126,7 @@ dependencies {
     implementation("sh.calvin.reorderable:reorderable:2.4.3")
 
     // Networking (REST + WS)
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+    implementation("com.squareup.okhttp3:okhttp:4.12.1")
     implementation("org.json:json:20231013")
 
     // Coroutines
